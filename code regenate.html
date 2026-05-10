@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encrypt and Decrypt Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #2b5876, #4e4376);
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        margin: 60px auto;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    input, textarea {
+        width: 90%;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    button {
+        background-color: #00c6ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 10px 5px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background-color: #0072ff;
+    }
+
+    .output {
+        margin-top: 15px;
+        font-weight: bold;
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Encrypt & Decrypt Generator</h1>
+
+    <button onclick="generateCode()">Generate Code</button>
+    <div id="generatedCode" class="output"></div>
+
+    <textarea id="message" placeholder="Enter your message..."></textarea><br>
+
+    <button onclick="encrypt()">Encrypt</button>
+    <button onclick="decrypt()">Decrypt</button>
+
+    <div class="output">
+        <p>Result:</p>
+        <div id="result"></div>
+    </div>
+</div>
+
+<script>
+    let secretCode = "";
+
+    function generateCode() {
+        // Generate a random 8-character alphanumeric code
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        secretCode = "";
+        for (let i = 0; i < 8; i++) {
+            secretCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById("generatedCode").textContent = "Generated Code: " + secretCode;
+    }
+
+    function encrypt() {
+        const message = document.getElementById("message").value;
+        if (!secretCode) {
+            alert("Please generate a code first!");
+            return;
+        }
+        // Simple encryption using Base64 and the secret code
+        const encoded = btoa(secretCode + message);
+        document.getElementById("result").textContent = encoded;
+    }
+
+    function decrypt() {
+        const message = document.getElementById("message").value;
+        if (!message) {
+            alert("Please enter the encrypted message first!");
+            return;
+        }
+        try {
+            const decoded = atob(message);
+            const original = decoded.replace(secretCode, "");
+            document.getElementById("result").textContent = original;
+        } catch (e) {
+            alert("Invalid encrypted text or wrong code!");
+        }
+    }
+</script>
+
+</body>
+</html>
